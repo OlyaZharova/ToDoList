@@ -55,11 +55,12 @@ public class ToDoList {
             System.out.println("");
             command = scanner.nextLine();
         }
+        scanner.close();
     }
 
     static String getArgument(String command, String action) {
         String argument;
-        argument = command.replaceAll(action, "").trim();
+        argument = command.replaceFirst(action, "").trim();
         return argument;
     }
 }

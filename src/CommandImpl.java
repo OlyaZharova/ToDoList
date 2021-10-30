@@ -6,10 +6,11 @@ public class CommandImpl implements Command {
 
     private int id;
     private HashMap<Integer, Task> toDoList;
+    private WorkWithFile workWithFile = WorkWithFileImpl.getInstance();
 
     public CommandImpl() {
-        toDoList = new HashMap<>();
-        id = 1;
+        toDoList = workWithFile.readFile();
+        id = workWithFile.getId();
     }
 
 
@@ -18,6 +19,7 @@ public class CommandImpl implements Command {
         Task task = new Task(title, "open");
         System.out.println(id);
         toDoList.put(id, task);
+        workWithFile.addToFile(task, id);
         id++;
     }
 
@@ -26,6 +28,7 @@ public class CommandImpl implements Command {
         Task task = toDoList.get(id);
         if (task != null) {
             task.setStatus("closed");
+            workWithFile.editInFile(task, id);
         } else {
             System.out.println("Task don't exist");
         }
@@ -37,6 +40,7 @@ public class CommandImpl implements Command {
         Task task = toDoList.get(id);
         if (task != null) {
             toDoList.remove(id);
+            workWithFile.deleteFromFile(id);
         } else {
             System.out.println("Task don't exist");
         }
