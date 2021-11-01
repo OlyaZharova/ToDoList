@@ -1,9 +1,25 @@
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 public class WorkWithFileImpl implements WorkWithFile {
 
-    private static final String PATH = System.getProperty("user.home")+"/todolist/todolist.data";
+    private static Path PATH;
+    static  {
+        try {
+            var dir = Paths.get(System.getProperty("user.home")+"/.todolist");
+            Files.createDirectories(dir);
+            PATH = dir.resolve("todolist.data");
+            if (!Files.exists(PATH)) {
+                Files.createFile(PATH);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+    }
     private File file;
     private int id;
 
@@ -16,7 +32,7 @@ public class WorkWithFileImpl implements WorkWithFile {
     }
 
     public WorkWithFileImpl() {
-        file = new File(PATH);
+        file = new File(PATH.toAbsolutePath().toString());
         id = 0;
     }
 
