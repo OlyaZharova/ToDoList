@@ -3,7 +3,7 @@ import java.util.HashMap;
 
 public class WorkWithFileImpl implements WorkWithFile {
 
-    private static final String PATH = "/Users/olyazharova/Documents/ToDoList/src/todolist.data";
+    private static final String PATH = System.getProperty("user.home")+"/todolist/todolist.data";
     private File file;
     private int id;
 
