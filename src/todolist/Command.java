@@ -1,6 +1,6 @@
 package todolist;
 
 public enum Command {
-  
-  ADD, LIST, DELETE, CLOSE
+
+    ADD, LIST, DELETE, CLOSE, EXIT
 }
