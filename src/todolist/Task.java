@@ -3,18 +3,18 @@ package todolist;
 public class Task {
     private final Integer id;
     private final String title;
-    private String status;
+    private Status status;
 
     public Task(
             String title,
-            String status
+            Status status
     ) {
         this(title, status, null);
     }
 
     public Task(
             String title,
-            String status,
+            Status status,
             Integer id
     ) {
         this.title = title;
@@ -30,11 +30,11 @@ public class Task {
         return title;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

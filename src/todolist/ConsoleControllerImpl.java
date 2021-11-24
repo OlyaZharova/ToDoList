@@ -3,14 +3,14 @@ package todolist;
 public class ConsoleControllerImpl implements ConsoleController {
 
     private final TaskService service;
-    private final Ui ui;
+    private final UI ui;
     private final CommandParser parser;
     private final InputValidation inputValidation;
 
     public ConsoleControllerImpl(
             TaskService service,
             CommandParser parser,
-            Ui ui,
+            UI ui,
             InputValidation inputValidation) {
         this.service = service;
         this.parser = parser;
@@ -20,7 +20,7 @@ public class ConsoleControllerImpl implements ConsoleController {
 
     @Override
     public void show() {
-        var line = ui.readLine();
+        var line = ui.getUserInput();
         ParseResult results = parser.parse(line);
         if (results instanceof ParseResult.Success) {
             results.ifSuccess(result -> {
@@ -37,7 +37,7 @@ public class ConsoleControllerImpl implements ConsoleController {
                             }, validationResult);
                         } else if (validationResult instanceof ValidationResult.Error) {
                             validationResult.ifError(error -> {
-                                ui.getLine(error.error());
+                                ui.showToUser(error.error());
                             }, validationResult);
                         }
                         show();
@@ -50,7 +50,7 @@ public class ConsoleControllerImpl implements ConsoleController {
                             }, validationResult);
                         } else if (validationResult instanceof ValidationResult.Error) {
                             validationResult.ifError(error -> {
-                                ui.getLine(error.error());
+                                ui.showToUser(error.error());
                             }, validationResult);
                         }
                         show();
@@ -63,7 +63,7 @@ public class ConsoleControllerImpl implements ConsoleController {
                             }, validationResult);
                         } else if (validationResult instanceof ValidationResult.Error) {
                             validationResult.ifError(error -> {
-                                ui.getLine(error.error());
+                                ui.showToUser(error.error());
                             }, validationResult);
                         }
                         show();
@@ -75,7 +75,7 @@ public class ConsoleControllerImpl implements ConsoleController {
             }, results);
         } else if (results instanceof ParseResult.Error) {
             results.ifError(error -> {
-                ui.getLine(error.error());
+                ui.showToUser(error.error());
             }, results);
             show();
         }

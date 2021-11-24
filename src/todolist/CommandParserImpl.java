@@ -7,19 +7,19 @@ public class CommandParserImpl implements CommandParser {
 
     @Override
     public ParseResult parse(String source) {
-        String[] sourses = source.trim().split(" ");
-        String commandStr = sourses[0].toUpperCase(Locale.ROOT);
+        if (source == null) {
+            return new ParseResult.Error("Source should not be null");
+        }
+        String[] sources = source.trim().split(" ");
+        String commandStr = sources[0].toUpperCase(Locale.ROOT);
         try {
             Command command = Command.valueOf(commandStr);
-            String[] parameters = Arrays.copyOfRange(sourses, 1, sourses.length);
-            ParseResult.Success success = new ParseResult.Success(command, parameters);
-            return success;
+            String[] parameters = Arrays.copyOfRange(sources, 1, sources.length);
+            return new ParseResult.Success(command, parameters);
         } catch (IllegalArgumentException e) {
-            ParseResult.Error error = new ParseResult.Error("Метод не найден");
-            return error;
+            return new ParseResult.Error("Метод не найден");
         } catch (NullPointerException e) {
-            ParseResult.Error error = new ParseResult.Error("Ничего не введено");
-            return error;
+            return new ParseResult.Error("Ничего не введено");
         }
     }
 }

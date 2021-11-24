@@ -16,6 +16,6 @@ public interface TaskRepository {
 
     void deleteTask(int task);
 
-    void listTask(String status);
+    void listTask(Status status);
 
 }
