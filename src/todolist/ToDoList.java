@@ -4,7 +4,7 @@ public class ToDoList {
 
     public static void main(String[] args) {
         UI ui = new ConsoleUI(System.in, System.out);
-        TaskRepository repository = new TaskRepositoryImpl(ui);
+        TaskRepository repository = new FileBasedTaskRepository(ui);
         Runtime.getRuntime()
                 .addShutdownHook(new Thread(() -> {
                     repository.flush();

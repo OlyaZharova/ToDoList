@@ -4,18 +4,14 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
-public class TaskRepositoryImpl implements TaskRepository {
+public class FileBasedTaskRepository implements TaskRepository {
 
     private static Path PATH;
     private File file;
     private HashMap<Integer, Task> toDoList;
     private int id;
-    private final UI ui;
 
     static {
         try {
@@ -31,16 +27,14 @@ public class TaskRepositoryImpl implements TaskRepository {
         }
     }
 
-    public TaskRepositoryImpl(UI ui) {
-        file = new File(PATH.toAbsolutePath().toString());
+    public FileBasedTaskRepository(File file) {
+        this.file = file;
         toDoList = readFile();
         id = getId(toDoList);
-        this.ui = ui;
     }
 
 
-    @Override
-    public HashMap<Integer, Task> readFile() {
+    private HashMap<Integer, Task> readFile() {
         HashMap<Integer, Task> toDoList = new HashMap<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -58,7 +52,12 @@ public class TaskRepositoryImpl implements TaskRepository {
         }
         return toDoList;
     }
-
+    
+    @Override
+    public Collection<Task> getAll() {
+        return toDoList.values();
+    }
+    
     private Integer getId(HashMap<Integer, Task> toDoList) {
         int id = 1;
         if (!toDoList.isEmpty()) {
@@ -87,7 +86,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     public void addTask(Task task) {
         id++;
         toDoList.put(id, task);
-        ui.showToUser(String.valueOf(id));
+//        ui.showToUser(String.valueOf(id));
 
     }
 
@@ -106,14 +105,14 @@ public class TaskRepositoryImpl implements TaskRepository {
         toDoList.remove(id);
     }
 
-    @Override
+//    @Override
     public void listTask(Status status) {
         Iterator<Map.Entry<Integer, Task>> iterator = toDoList.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<Integer, Task> taskEntry = iterator.next();
             if (taskEntry.getValue().getStatus().equals(status) || status.equals(Status.ALL)) {
-                ui.showToUser(taskEntry.getKey() + " | " + taskEntry.getValue().getTitle() + " | " +
-                        taskEntry.getValue().getStatus().toString().toLowerCase(Locale.ROOT));
+//                ui.showToUser(taskEntry.getKey() + " | " + taskEntry.getValue().getTitle() + " | " +
+//                        taskEntry.getValue().getStatus().toString().toLowerCase(Locale.ROOT));
             }
         }
     }

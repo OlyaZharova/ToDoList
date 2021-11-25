@@ -28,8 +28,13 @@ public class ConsoleControllerImpl implements ConsoleController {
               case LIST -> {
                 ValidationResult validationResult = inputValidation.parseStatus(result.parameters());
                 if (validationResult instanceof ValidationResult.SuccessStatus) {
-                  validationResult.ifSuccess(valResult -> {
-                    service.listTask(valResult.status());
+                  validationResult
+                      .ifSuccess(valResult -> {
+                    service.getAllTasksByStatus(valResult.status())
+                        .forEach(it -> {
+                          System.out.println(it);
+                        });
+                    
                   }, validationResult);
                 } else if (validationResult instanceof ValidationResult.Error) {
                   validationResult.ifError(error -> {

@@ -1,13 +1,11 @@
 package todolist;
 
+import java.util.Collection;
+
 public interface TaskService {
 
     void addTask(
             String[] parameters
-    );
-
-    void listTask(
-            Status status
     );
 
     void closeTask(
@@ -17,5 +15,7 @@ public interface TaskService {
     void deleteTask(
             int id
     );
-
+    
+    Collection<Task> getAllTasksByStatus(Status status);
+    
 }
