@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 public class TaskRepositoryImpl implements TaskRepository {
@@ -14,7 +15,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     private File file;
     private HashMap<Integer, Task> toDoList;
     private int id;
-    private final Ui ui;
+    private final UI ui;
 
     static {
         try {
@@ -30,7 +31,7 @@ public class TaskRepositoryImpl implements TaskRepository {
         }
     }
 
-    public TaskRepositoryImpl(Ui ui) {
+    public TaskRepositoryImpl(UI ui) {
         file = new File(PATH.toAbsolutePath().toString());
         toDoList = readFile();
         id = getId(toDoList);
@@ -47,9 +48,9 @@ public class TaskRepositoryImpl implements TaskRepository {
             while ((line = reader.readLine()) != null) {
                 String[] lines = line.split(" ");
                 int id = Integer.parseInt(lines[0]);
-                String stutus = lines[lines.length - 1];
-                String title = line.substring(String.valueOf(id).length(), line.length() - stutus.length()).trim();
-                toDoList.put(id, new Task(title, stutus));
+                Status status = Status.valueOf(lines[lines.length - 1].toUpperCase(Locale.ROOT));
+                String title = line.substring(String.valueOf(id).length(), line.length() - status.toString().length()).trim();
+                toDoList.put(id, new Task(title, status));
             }
             reader.close();
         } catch (IOException e) {
@@ -86,14 +87,13 @@ public class TaskRepositoryImpl implements TaskRepository {
     public void addTask(Task task) {
         id++;
         toDoList.put(id, task);
-        ui.getLine(String.valueOf(id));
+        ui.showToUser(String.valueOf(id));
 
     }
 
     @Override
     public Task getTask(int id) {
-        Task task = toDoList.get(id);
-        return task;
+        return toDoList.get(id);
     }
 
     @Override
@@ -107,12 +107,13 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
-    public void listTask(String status) {
+    public void listTask(Status status) {
         Iterator<Map.Entry<Integer, Task>> iterator = toDoList.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<Integer, Task> taskEntry = iterator.next();
-            if (taskEntry.getValue().getStatus().equals(status) || status.equals("all")) {
-                ui.getLine(taskEntry.getKey() + " | " + taskEntry.getValue().getTitle() + " | " + taskEntry.getValue().getStatus());
+            if (taskEntry.getValue().getStatus().equals(status) || status.equals(Status.ALL)) {
+                ui.showToUser(taskEntry.getKey() + " | " + taskEntry.getValue().getTitle() + " | " +
+                        taskEntry.getValue().getStatus().toString().toLowerCase(Locale.ROOT));
             }
         }
     }

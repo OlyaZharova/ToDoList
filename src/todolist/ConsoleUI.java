@@ -4,26 +4,31 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-public class ConsoleUI implements Ui {
+public class ConsoleUI implements UI {
 
     private InputStream in;
     private PrintStream out;
+    private Scanner sc;
 
     public ConsoleUI(InputStream in, PrintStream out) {
         this.in = in;
         this.out = out;
+        sc = new Scanner(in);
     }
 
     @Override
-    public void getLine(String line) {
+    public void showToUser(String line) {
         out.println(line);
     }
 
     @Override
-    public String readLine() {
+    public String getUserInput() {
         String line;
-        Scanner sc = new Scanner(in);
         line = sc.nextLine();
         return line;
+    }
+
+    public void closeScanner() {
+        sc.close();
     }
 }
