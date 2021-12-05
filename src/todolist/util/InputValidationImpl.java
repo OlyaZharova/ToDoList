@@ -1,4 +1,6 @@
-package todolist;
+package todolist.util;
+
+import todolist.repository.Status;
 
 import java.util.Locale;
 
