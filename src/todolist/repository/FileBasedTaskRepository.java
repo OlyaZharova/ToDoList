@@ -1,10 +1,13 @@
-package todolist;
+package todolist.repository;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
 
 public class FileBasedTaskRepository implements TaskRepository {
 
@@ -27,8 +30,8 @@ public class FileBasedTaskRepository implements TaskRepository {
         }
     }
 
-    public FileBasedTaskRepository(File file) {
-        this.file = file;
+    public FileBasedTaskRepository() {
+        this.file = new File(PATH.toAbsolutePath().toString());
         toDoList = readFile();
         id = getId(toDoList);
     }
@@ -44,7 +47,7 @@ public class FileBasedTaskRepository implements TaskRepository {
                 int id = Integer.parseInt(lines[0]);
                 Status status = Status.valueOf(lines[lines.length - 1].toUpperCase(Locale.ROOT));
                 String title = line.substring(String.valueOf(id).length(), line.length() - status.toString().length()).trim();
-                toDoList.put(id, new Task(title, status));
+                toDoList.put(id, new Task(title, status, id));
             }
             reader.close();
         } catch (IOException e) {
@@ -52,12 +55,12 @@ public class FileBasedTaskRepository implements TaskRepository {
         }
         return toDoList;
     }
-    
+
     @Override
     public Collection<Task> getAll() {
         return toDoList.values();
     }
-    
+
     private Integer getId(HashMap<Integer, Task> toDoList) {
         int id = 1;
         if (!toDoList.isEmpty()) {
@@ -66,6 +69,11 @@ public class FileBasedTaskRepository implements TaskRepository {
                 id = Integer.parseInt(iterator.next().toString());
             }
         }
+        return id;
+    }
+
+    @Override
+    public Integer getId() {
         return id;
     }
 
@@ -83,11 +91,10 @@ public class FileBasedTaskRepository implements TaskRepository {
     }
 
     @Override
-    public void addTask(Task task) {
+    public int addTask(Task task) {
         id++;
         toDoList.put(id, task);
-//        ui.showToUser(String.valueOf(id));
-
+        return id;
     }
 
     @Override
@@ -105,15 +112,4 @@ public class FileBasedTaskRepository implements TaskRepository {
         toDoList.remove(id);
     }
 
-//    @Override
-    public void listTask(Status status) {
-        Iterator<Map.Entry<Integer, Task>> iterator = toDoList.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Integer, Task> taskEntry = iterator.next();
-            if (taskEntry.getValue().getStatus().equals(status) || status.equals(Status.ALL)) {
-//                ui.showToUser(taskEntry.getKey() + " | " + taskEntry.getValue().getTitle() + " | " +
-//                        taskEntry.getValue().getStatus().toString().toLowerCase(Locale.ROOT));
-            }
-        }
-    }
 }

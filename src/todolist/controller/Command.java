@@ -1,4 +1,4 @@
-package todolist;
+package todolist.controller;
 
 public enum Command {
 

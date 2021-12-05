@@ -1,4 +1,6 @@
-package todolist;
+package todolist.util;
+
+import todolist.controller.Command;
 
 import java.util.Arrays;
 import java.util.Locale;

@@ -1,10 +1,13 @@
-package todolist;
+package todolist.service;
+
+import todolist.repository.Status;
+import todolist.repository.Task;
 
 import java.util.Collection;
 
 public interface TaskService {
 
-    void addTask(
+    int addTask(
             String[] parameters
     );
 
@@ -15,7 +18,7 @@ public interface TaskService {
     void deleteTask(
             int id
     );
-    
+
     Collection<Task> getAllTasksByStatus(Status status);
-    
+
 }

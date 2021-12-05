@@ -1,7 +1,7 @@
-package todolist;
+package todolist.repository;
 
 public class Task {
-    private final Integer id;
+    private Integer id;
     private final String title;
     private Status status;
 
@@ -36,6 +36,10 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override

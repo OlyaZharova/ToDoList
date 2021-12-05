@@ -1,4 +1,4 @@
-package todolist;
+package todolist.util;
 
 public interface CommandParser {
 

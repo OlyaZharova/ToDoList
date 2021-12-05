@@ -1,4 +1,4 @@
-package todolist;
+package todolist.UI;
 
 public interface UI {
 

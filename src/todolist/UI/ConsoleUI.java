@@ -1,4 +1,4 @@
-package todolist;
+package todolist.UI;
 
 import java.io.InputStream;
 import java.io.PrintStream;
