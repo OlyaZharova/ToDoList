@@ -33,10 +33,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void deleteTask(int id) {
+    public String deleteTask(int id) {
         Task task = repository.getTask(id);
         if (task != null) {
-            repository.deleteTask(id);
+            if (repository.deleteTask(id) == true) {
+                return null;
+            } else {
+                return "Задача не была удалена";
+            }
+        } else {
+            return "Задача с заданным id не найденна";
         }
     }
 

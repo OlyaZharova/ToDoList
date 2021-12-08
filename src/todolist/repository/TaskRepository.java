@@ -14,7 +14,7 @@ public interface TaskRepository {
 
     void closeTask(Task task);
 
-    void deleteTask(int task);
+    boolean deleteTask(int task);
 
     Integer getId();
 

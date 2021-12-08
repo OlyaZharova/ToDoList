@@ -52,7 +52,10 @@ public class ConsoleControllerImpl implements ConsoleController {
                         case DELETE -> {
                             inputValidation.parseInteger(result.parameters())
                                     .ifSuccessInt(valResult -> {
-                                        service.deleteTask(valResult.id());
+                                        String resultOfDelete = service.deleteTask(valResult.id());
+                                        if (resultOfDelete != null) {
+                                            ui.showToUser(resultOfDelete);
+                                        }
                                     })
                                     .ifError(error -> ui.showToUser(error.error()));
                         }

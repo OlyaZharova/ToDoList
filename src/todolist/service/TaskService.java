@@ -15,7 +15,7 @@ public interface TaskService {
             int id
     );
 
-    void deleteTask(
+    String deleteTask(
             int id
     );
 

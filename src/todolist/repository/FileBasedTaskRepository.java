@@ -108,8 +108,12 @@ public class FileBasedTaskRepository implements TaskRepository {
     }
 
     @Override
-    public void deleteTask(int id) {
-        toDoList.remove(id);
+    public boolean deleteTask(int id) {
+        if (toDoList.remove(id) == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }
