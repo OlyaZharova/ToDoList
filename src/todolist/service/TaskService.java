@@ -7,17 +7,11 @@ import java.util.Collection;
 
 public interface TaskService {
 
-    int addTask(
-            String[] parameters
-    );
+    int addTask(String[] parameters);
 
-    String closeTask(
-            int id
-    );
+    String closeTask(int id);
 
-    String deleteTask(
-            int id
-    );
+    String deleteTask(int id);
 
     Collection<Task> getAllTasksByStatus(Status status);
 

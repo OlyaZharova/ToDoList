@@ -12,7 +12,7 @@ public class CommandParserImpl implements CommandParser {
         if (source == null) {
             return new ParseResult.Error("Source should not be null");
         }
-        String[] sources = source.trim().split(" ");
+        String[] sources = source.trim().split(" ", 2);
         String commandStr = sources[0].toUpperCase(Locale.ROOT);
         try {
             Command command = Command.valueOf(commandStr);

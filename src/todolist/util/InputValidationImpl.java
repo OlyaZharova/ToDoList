@@ -13,7 +13,8 @@ public class InputValidationImpl implements InputValidation {
                 int id = Integer.parseInt(parameter);
                 return new ValidationResult.SuccessInteger(id);
             } catch (NumberFormatException e) {
-                return new ValidationResult.Error("Неверный id");
+                return new ValidationResult.Error("Неверный формат id. Ожидается цельночисленное значение от %s до %s."
+                        .formatted(1, Integer.MAX_VALUE));
             }
         } else return new ValidationResult.Error("Aргумент отсутствует");
     }
