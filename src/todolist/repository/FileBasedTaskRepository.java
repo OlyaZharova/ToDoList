@@ -103,8 +103,12 @@ public class FileBasedTaskRepository implements TaskRepository {
     }
 
     @Override
-    public void closeTask(Task task) {
-        toDoList.get(task.getId()).setStatus(task.getStatus());
+    public boolean saveTask(Task task) {
+        if (toDoList.replace(task.getId(), task) == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override

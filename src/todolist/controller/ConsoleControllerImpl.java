@@ -45,7 +45,10 @@ public class ConsoleControllerImpl implements ConsoleController {
                         case CLOSE -> {
                             inputValidation.parseInteger(result.parameters())
                                     .ifSuccessInt(valResult -> {
-                                        service.closeTask(valResult.id());
+                                        String resultOfClose = service.closeTask(valResult.id());
+                                        if (resultOfClose != null) {
+                                            ui.showToUser(resultOfClose);
+                                        }
                                     })
                                     .ifError(error -> ui.showToUser(error.error()));
                         }

@@ -23,11 +23,17 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void closeTask(int id) {
+    public String closeTask(int id) {
         Task task = repository.getTask(id);
         if (task != null) {
             task.setStatus(Status.CLOSED);
-            repository.closeTask(new Task(task.getTitle(), task.getStatus(), id));
+            if (repository.saveTask(task)) {
+                return null;
+            } else {
+                return "Задача не была закрыта";
+            }
+        } else {
+            return "Задача с заданным id не найденна";
         }
 
     }
@@ -36,7 +42,7 @@ public class TaskServiceImpl implements TaskService {
     public String deleteTask(int id) {
         Task task = repository.getTask(id);
         if (task != null) {
-            if (repository.deleteTask(id) == true) {
+            if (repository.deleteTask(id)) {
                 return null;
             } else {
                 return "Задача не была удалена";

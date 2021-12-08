@@ -11,7 +11,7 @@ public interface TaskService {
             String[] parameters
     );
 
-    void closeTask(
+    String closeTask(
             int id
     );
 

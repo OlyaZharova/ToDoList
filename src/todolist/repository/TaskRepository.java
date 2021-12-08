@@ -12,7 +12,7 @@ public interface TaskRepository {
 
     Task getTask(int id);
 
-    void closeTask(Task task);
+    boolean saveTask(Task task);
 
     boolean deleteTask(int task);
 
