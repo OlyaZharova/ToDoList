@@ -30,15 +30,17 @@ public class ConsoleControllerImpl implements ConsoleController {
                 .ifSuccess(result -> {
                     switch (result.command()) {
                         case ADD -> {
-                            ui.showToUser(String.valueOf(service.addTask(result.parameters())));
+                            try {
+                                ui.showToUser(String.valueOf(service.addTask(result.parameters())));
+                            } catch (IllegalArgumentException exception) {
+                                ui.showToUser(exception.getMessage());
+                            }
                         }
                         case LIST -> {
                             inputValidation.parseStatus(result.parameters())
                                     .ifSuccess(valResult -> {
                                         service.getAllTasksByStatus(valResult.status())
-                                                .forEach(it -> {
-                                                    ui.showToUser(it.toString());
-                                                });
+                                                .forEach(it -> ui.showToUser(it.toString()));
                                     })
                                     .ifError(error -> ui.showToUser(error.error()));
                         }

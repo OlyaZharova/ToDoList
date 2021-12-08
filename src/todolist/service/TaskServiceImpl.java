@@ -18,6 +18,9 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public int addTask(String[] parameters) {
         String title = String.join(" ", parameters);
+        if (title.isBlank()) {
+            throw new IllegalArgumentException("Title should not be null");
+        }
         Task task = new Task(title, Status.OPEN, repository.getId());
         return repository.addTask(task);
     }
