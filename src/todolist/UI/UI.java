@@ -1,10 +1,12 @@
 package todolist.UI;
 
-public interface UI {
+import java.io.Closeable;
+
+public interface UI extends Closeable {
 
     void showToUser(String line);
 
     String getUserInput();
 
-    void closeScanner();
+    void close();
 }

@@ -6,12 +6,10 @@ import java.util.Scanner;
 
 public class ConsoleUI implements UI {
 
-    private InputStream in;
     private PrintStream out;
     private Scanner sc;
 
     public ConsoleUI(InputStream in, PrintStream out) {
-        this.in = in;
         this.out = out;
         sc = new Scanner(in);
     }
@@ -28,7 +26,8 @@ public class ConsoleUI implements UI {
         return line;
     }
 
-    public void closeScanner() {
+    @Override
+    public void close() {
         sc.close();
     }
 }

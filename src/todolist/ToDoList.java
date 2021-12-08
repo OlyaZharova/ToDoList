@@ -21,7 +21,7 @@ public class ToDoList {
         Runtime.getRuntime()
                 .addShutdownHook(new Thread(() -> {
                     repository.flush();
-                    ui.closeScanner();
+                    ui.close();
                 }));
         TaskService service = new TaskServiceImpl(repository);
         CommandParser parser = new CommandParserImpl();
