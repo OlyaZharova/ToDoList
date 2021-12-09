@@ -16,6 +16,4 @@ public interface TaskRepository {
 
     boolean deleteTask(int task);
 
-    Integer getId();
-
 }

@@ -1,46 +1,26 @@
 package todolist.repository;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
+import java.util.*;
 
 public class FileBasedTaskRepository implements TaskRepository {
 
-    private static Path PATH;
     private File file;
-    private HashMap<Integer, Task> toDoList;
+    private Map<Integer, Task> toDoList;
     private int id;
 
-    static {
-        try {
-            var dir = Paths.get(System.getProperty("user.home") + "/.todolist");
-            Files.createDirectories(dir);
-            PATH = dir.resolve("todolist.data");
-            if (!Files.exists(PATH)) {
-                Files.createFile(PATH);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
+    public FileBasedTaskRepository(File file) {
+        this.file = file;
+        this.toDoList = deserialize(file);
+        this.id = Optional
+                .ofNullable(findMaxId(toDoList))
+                .orElse(1);
     }
 
-    public FileBasedTaskRepository() {
-        this.file = new File(PATH.toAbsolutePath().toString());
-        toDoList = readFile();
-        id = getId(toDoList);
-    }
-
-
-    private HashMap<Integer, Task> readFile() {
+    private static HashMap<Integer, Task> deserialize(File source) {
         HashMap<Integer, Task> toDoList = new HashMap<>();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+            BufferedReader reader = new BufferedReader(new FileReader(source));
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] lines = line.split(" ");
@@ -61,20 +41,8 @@ public class FileBasedTaskRepository implements TaskRepository {
         return toDoList.values();
     }
 
-    private Integer getId(HashMap<Integer, Task> toDoList) {
-        int id = 1;
-        if (!toDoList.isEmpty()) {
-            Iterator iterator = toDoList.keySet().iterator();
-            while (iterator.hasNext()) {
-                id = Integer.parseInt(iterator.next().toString());
-            }
-        }
-        return id;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
+    private Integer findMaxId(Map<Integer, Task> toDoList) {
+        return Collections.max(toDoList.keySet());
     }
 
     @Override
@@ -93,6 +61,7 @@ public class FileBasedTaskRepository implements TaskRepository {
     @Override
     public int addTask(Task task) {
         id++;
+        task.setId(id);
         toDoList.put(id, task);
         return id;
     }
@@ -104,20 +73,12 @@ public class FileBasedTaskRepository implements TaskRepository {
 
     @Override
     public boolean saveTask(Task task) {
-        if (toDoList.replace(task.getId(), task) == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return toDoList.replace(task.getId(), task) != null;
     }
 
     @Override
     public boolean deleteTask(int id) {
-        if (toDoList.remove(id) == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return toDoList.remove(id) != null;
     }
 
 }

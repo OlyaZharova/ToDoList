@@ -21,8 +21,7 @@ public class TaskServiceImpl implements TaskService {
         if (title.isBlank()) {
             throw new IllegalArgumentException("Title should not be null");
         }
-        Task task = new Task(title, Status.OPEN, repository.getId());
-        return repository.addTask(task);
+        return repository.addTask(new Task(title, Status.OPEN));
     }
 
     @Override

@@ -13,11 +13,31 @@ import todolist.util.CommandParserImpl;
 import todolist.util.InputValidation;
 import todolist.util.InputValidationImpl;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class ToDoList {
+    private static Path PATH;
+    static {
+        try {
+            var dir = Paths.get(System.getProperty("user.home") + "/.todolist");
+            Files.createDirectories(dir);
+            PATH = dir.resolve("todolist.data");
+            if (!Files.exists(PATH)) {
+                Files.createFile(PATH);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+    }
 
     public static void main(String[] args) {
         UI ui = new ConsoleUI(System.in, System.out);
-        TaskRepository repository = new FileBasedTaskRepository();
+        TaskRepository repository = new FileBasedTaskRepository(new File(PATH.toAbsolutePath().toString()));
         Runtime.getRuntime()
                 .addShutdownHook(new Thread(() -> {
                     repository.flush();
